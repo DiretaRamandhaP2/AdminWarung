@@ -1,0 +1,38 @@
+:root {
+
+/* ============================ */
+/* PRIMARY COLOR */
+/* ============================ */
+
+    --color-primary-dark: #4A4947;
+    --color-primary-brown: #B17457;
+    --color-primary-gray: #D8D2C2;
+    --color-primary-light: #FAF7F0;
+
+}
+
+.bg-dark-primary{
+    background-color: var(--color-primary-dark);
+}
+.text-dark-primary{
+    color: var(--color-primary-dark);
+}
+.bg-brown-primary{
+    background-color: var(--color-primary-brown);
+}
+.text-brown-primary{
+    color: var(--color-primary-brown);
+}
+.bg-gray-primary{
+    background-color: var(--color-primary-gray);
+}
+.text-gray-primary{
+    color: var(--color-primary-gray);
+}
+.bg-light-primary{
+    background-color: var(--color-primary-light);
+}
+.text-light-primary{
+    color: var(--color-primary-light);
+}
+

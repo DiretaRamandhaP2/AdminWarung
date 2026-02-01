@@ -3,36 +3,59 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\Validation\ValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    protected $validate;
 
-    public function __construct(
-        ValidationService $validationService
-    ) {
-        $this->validate = $validationService;
-    }
-    public function login(){
-        return view('pages.login.login');
+    public function __construct() {}
+
+    public function login()
+    {
+        return view('pages.auth.login');
     }
     public function auth(Request $request)
     {
         $rules = [
-            'username' => 'required|string|unique:users,username',
-            'password'=> 'required|min:6',
+            'username' => 'required|string',
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+            ],
         ];
 
-        $validator = $this->validate->validate($request->all(),$rules);
+        $crendetials = $request->only('username', 'password');
 
-        if(Auth::attempt($validator)){
-            return redirect()->route('dashboard')->with('success',true);
+        $validate = Validator::make($crendetials, $rules);
+
+        if ($validate->fails()) {
+            return redirect()->route('login')->with('error', 'Validation failed');
         }
 
-        return redirect()->back()->withErrors($validator);
-
+        if (Auth::attempt($crendetials)) {
+            toast('Berhasil Login', 'success');
+            return redirect()->route('dashboard.admin');
+        } else {
+            toast('Username atau Password salah', 'question');
+            return redirect()->route('login');
+        }
     }
+    public function logout()
+    {
+        Auth::logout();
+        toast('Berhasil Logout', 'success');
+        return redirect()->route('landing-page');
+    }
+
+    public function register()
+    {
+        return view('pages.auth.register');
+    }
+
+    public function authRegister(Request $request) {}
 }
