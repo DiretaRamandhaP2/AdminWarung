@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Store;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use PhpParser\Node\Expr\New_;
 
 class AuthController extends Controller
 {
@@ -57,5 +60,52 @@ class AuthController extends Controller
         return view('pages.auth.register');
     }
 
-    public function authRegister(Request $request) {}
+    public function authRegister(Request $request)
+    {
+        $rules = [
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'phone' => 'required|string|max:15',
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers(),
+                'confirmed',
+            ],
+            'password_confirmation' => 'required',
+            'name_store' => 'sometimes|string|max:255',
+        ];
+
+        $validate = Validator::make($request->all(), $rules);
+
+        if ($validate->fails()) {
+            $errors = $validate->errors()->all();
+
+            $errorMessage = implode(' ', $errors);
+            alert()->error('Errors', $errorMessage);
+            return redirect()->route('register');
+        }
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        if (isset($request->store_name)) {
+            $user->role = 'store_owner';
+        }
+        $user->save();
+
+        if (isset($request->store_name)) {
+            $store = new Store();
+            $store->store_name = $request->store_name;
+            $store->owner_id = $user->id;
+            $store->save();
+        }
+
+        toast('Registrasi Berhasil', 'success');
+        return redirect()->route('login');
+    }
 }

@@ -2,6 +2,7 @@
 <html lang="en">
 @include('layout.header.header')
 @stack('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" />
 <style type="text/tailwindcss">
     @theme {
         --color-blue-primary: #6892D5;
@@ -141,5 +142,13 @@
     </style>
 </body>
 @stack('js')
+<script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let table = new DataTable('#myTable', {
+            responsive: true
+        });
+    });
+</script>
 
 </html>

@@ -43,4 +43,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relasi ke Store
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'owner_id');
+    }
 }

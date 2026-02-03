@@ -69,25 +69,31 @@
 
                     <div class="flex flex-col gap-1.5 md:col-span-2">
                         <label class="text-sm font-semibold text-gray-700 ml-1">Nama Pemilik Warung</label>
-                        <input type="text" name="name" placeholder="Contoh: Budi Santoso" required
+                        <input type="text" name="{{ old('name') }}" placeholder="Contoh: Budi Santoso" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-dark-primary focus:ring-4 focus:ring-green-dark-primary/10 transition-all outline-none">
+                    </div>
+
+                    <div class="flex flex-col gap-1.5 md:col-span-2">
+                        <label class="text-sm font-semibold text-gray-700 ml-1">Username</label>
+                        <input type="text" name="{{ old('username') }}" placeholder="Contoh: Budi Santoso" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-dark-primary focus:ring-4 focus:ring-green-dark-primary/10 transition-all outline-none">
                     </div>
 
                     <div class="flex flex-col gap-1.5">
                         <label class="text-sm font-semibold text-gray-700 ml-1">Email Aktif</label>
-                        <input type="email" name="email" placeholder="budi@email.com" required
+                        <input type="email" name="{{ old('email') }}" placeholder="budi@email.com" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-dark-primary focus:ring-4 focus:ring-green-dark-primary/10 transition-all outline-none">
                     </div>
 
                     <div class="flex flex-col gap-1.5">
                         <label class="text-sm font-semibold text-gray-700 ml-1">Nomor WhatsApp</label>
-                        <input type="tel" name="phone" placeholder="081234567xxx" required
+                        <input type="tel" name="{{ old('phone') }}" placeholder="628123xxxxxxx" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-dark-primary focus:ring-4 focus:ring-green-dark-primary/10 transition-all outline-none">
                     </div>
 
                     <div class="flex flex-col gap-1.5 md:col-span-2">
                         <label class="text-sm font-semibold text-gray-700 ml-1">Nama Warung / Toko</label>
-                        <input type="text" name="shop_name" placeholder="Contoh: Warung Berkah Jaya" required
+                        <input type="text" name="{{ old('store_name') }}" placeholder="Contoh: Warung Berkah Jaya" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-dark-primary focus:ring-4 focus:ring-green-dark-primary/10 transition-all outline-none">
                     </div>
 
