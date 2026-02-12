@@ -2,6 +2,7 @@
 <html lang="en">
 @include('layout.header.header')
 @stack('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.dataTables.css" />
 <style type="text/tailwindcss">
     @theme {
         --color-blue-primary: #6892D5;
@@ -36,19 +37,19 @@
 
                 <ul class="space-y-1.5">
                     <li>
-                        <a href="#"
-                            class="flex items-center py-3 px-4 rounded-xl text-blue-primary bg-blue-primary/10 font-bold transition-all">
+                        <a href="{{ route('dashboard.admin') }}"
+                            class="flex items-center py-3 px-4 rounded-xl {{ request()->routeIs('dashboard.admin') ? 'text-blue-primary bg-blue-primary/10' : 'text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary' }} font-bold transition-all">
                             <i class="fa-solid fa-chart-pie mr-3"></i>
                             <span class="text-sm">Dashboard</span>
                         </a>
                     </li>
 
-                    <li x-data="{ open: false }">
+                    <li x-data="{ open: {{ request()->routeIs('management.*') ? 'true' : 'false' }} }">
                         <button @click="open = !open"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-xl text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary transition-all text-sm font-semibold group">
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-xl {{ request()->routeIs('management.*') ? 'text-blue-primary bg-blue-primary/10' : 'text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary' }} transition-all text-sm font-semibold group">
                             <span class="flex items-center">
                                 <i class="fa-solid fa-user-shield mr-3 group-hover:scale-110 transition"></i>
-                                User Management
+                                Users
                             </span>
                             <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300"
                                 :class="{ 'rotate-180': open }"></i>
@@ -56,12 +57,9 @@
                         <ul x-show="open" x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 -translate-y-2"
                             class="mt-1 ml-4 border-l-2 border-green-light-primary space-y-1">
-                            <li><a href="#"
-                                    class="block py-2 px-6 text-sm text-gray-500 hover:text-blue-primary font-medium">Data
-                                    Admin</a></li>
-                            <li><a href="#"
-                                    class="block py-2 px-6 text-sm text-gray-500 hover:text-blue-primary font-medium">Role
-                                    & Permission</a></li>
+                            <li><a href="{{ route('management.users.index') }}"
+                                    class="block py-2 px-6 text-sm {{ request()->routeIs('management.users.*') ? 'text-blue-primary font-bold' : 'text-gray-500 hover:text-blue-primary' }} font-medium">Management
+                                    Users</a></li>
                         </ul>
                     </li>
 
@@ -140,6 +138,13 @@
         }
     </style>
 </body>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS & JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 @stack('js')
 
 </html>

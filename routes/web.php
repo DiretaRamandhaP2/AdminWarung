@@ -21,13 +21,16 @@ Route::get('/', [MainController::class, 'index'])->name('landing-page');
 
 Route::middleware(['login'])->group(function () {
 
-    //Dashboard Admin
-    Route::prefix('dashboard')->group(function () {
-        Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
-    });
+    //middleware admin
+    Route::middleware(['admin'])->group(function () {
+        //Dashboard Admin
+        Route::prefix('dashboard')->group(function () {
+            Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
+        });
 
-    //Users Pages
-    Route::prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('users.table');
+        Route::prefix('management')->group(function () {
+            Route::resource('users', UserController::class)->names('management.users');
+            Route::get('users/data', [UserController::class, 'dataTables'])->name('management.users.data');
+        });
     });
 });

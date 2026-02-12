@@ -4,59 +4,111 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Repositories\Users\UserRepository;
+use App\Repositories\Store\Interface\StoreRepositoryInterface;
+use App\Repositories\Users\Interface\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
     protected $user;
+    protected $store;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(
+        UserRepositoryInterface $user,
+        StoreRepositoryInterface $store
+    ) {
+        $this->user = $user;
+        $this->store = $store;
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        $this->user = $userRepository;
+        $data = $this->user->getAll();
+        return view('pages.user-pages.main-user', compact('data'));
     }
 
-    public function login()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        return view('pages.login.login');
+        return view('pages.user-pages.form-user');
     }
 
-    public function auth(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $isEdit = $request->has('id') ? true : false;
+        $rules = [
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,user,store_owner',
+            'store_name' => 'nullable|string|max:255',
+        ];
 
-        if (auth()->attempt($credentials)) {
-            return redirect()->route('dashboard.admin');
+        $data = $request->all();
+
+        // dd($data);
+
+        $validatedData = Validator::make($request->all(), $rules);
+
+        if ($validatedData->fails()) {
+            return redirect()->back();
+        }
+
+        if ($isEdit == true) {
         } else {
-            return redirect()->route('login')->withErrors(['Invalid credentials']);
+            $this->user->create($data);
+            if (isset($data['store_name']) && $data['role'] == 'store_owner') {
+                $this->store->createOnlyName($data,Auth::id());
+            }
+            return redirect()->route('management.users.index');
         }
     }
 
-    public function index(Request $request)
+    /**
+     * Display the specified resource.
+     */
+    public function show(User $user) {}
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($user)
     {
-        // Ambil parameter pencarian
-        $search = $request->get('search');
-        $sortBy = $request->get('sort_by', 'id');
-        $sortOrder = $request->get('sort_order', 'asc');
-
-        // Query data dengan pencarian dan sorting
-        $query = User::query();
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-
-        // Sorting
-        if (in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
-            $query->orderBy($sortBy, $sortOrder);
-        }
-
-        // Pagination
-        $users = $query->paginate(10)->withQueryString();
-
-        return view('pages.users.table', compact('users', 'search', 'sortBy', 'sortOrder'));
+        $data = $this->user->findById($user);
+        return view('pages.user-pages.form-user', compact('data'));
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $user)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($user)
+    {
+        $user = $this->user->delete($user);
+        return redirect()->route('management.users.index');
+    }
+
+    public function dataTables(){
+        return $this->user->DataTables();
+    }
+
+
 }
