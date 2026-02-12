@@ -65,15 +65,24 @@
                 class="group bg-white p-6 rounded-[2rem] border border-green-light-primary shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Akses Admin</p>
-                        <h3 class="text-3xl font-black text-gray-800 tracking-tight">3 <span
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Fitur Akses</p>
+                        @php
+                            if (auth()->user()->role == 'admin') {
+                                $level = 3;
+                            } elseif (auth()->user()->role == 'store_owner') {
+                                $level = 2;
+                            } else {
+                                $level = 1;
+                            }
+                        @endphp
+                        <h3 class="text-3xl font-black text-gray-800 tracking-tight">{{ $level }} <span
                                 class="text-sm font-medium text-gray-400 italic">Level</span></h3>
                         <div class="mt-3 flex items-center">
                             <span
                                 class="flex items-center text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded-lg border border-purple-100">
                                 Protected
                             </span>
-                            <span class="text-[10px] text-gray-400 ml-2 font-medium italic">Admin, Owner, Kasir</span>
+                            <span class="text-[10px] text-gray-400 ml-2 font-medium italic">Admin, Owner, User</span>
                         </div>
                     </div>
                     <div
@@ -161,8 +170,8 @@
                                                 class="p-2.5 bg-blue-primary/5 text-blue-primary rounded-xl hover:bg-blue-primary hover:text-white transition-all">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <form action="{{ route('management.users.destroy', $user->id) }}" method="post"
-                                                class="inline">
+                                            <form action="{{ route('management.users.destroy', $user->id) }}"
+                                                method="post" class="inline">
                                                 @csrf @method('DELETE')
                                                 <button type="button" onclick="confirmDelete(this)"
                                                     class="p-2.5 bg-red-50 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition-all">
