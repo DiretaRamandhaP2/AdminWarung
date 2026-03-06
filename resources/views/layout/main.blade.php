@@ -13,6 +13,7 @@
 </style>
 
 <body class="bg-white-primary font-sans antialiased">
+    @include('sweetalert::alert')
     <div class="flex min-h-screen">
         <aside
             class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-green-light-primary flex flex-col z-20 shadow-sm">
@@ -44,9 +45,9 @@
                         </a>
                     </li>
 
-                    <li x-data="{ open: {{ request()->routeIs('management.*') ? 'true' : 'false' }} }">
+                    <li x-data="{ open: {{ request()->routeIs('management.users.*') ? 'true' : 'false' }} }">
                         <button @click="open = !open"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-xl {{ request()->routeIs('management.*') ? 'text-blue-primary bg-blue-primary/10' : 'text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary' }} transition-all text-sm font-semibold group">
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-xl {{ request()->routeIs('management.users.*') ? 'text-blue-primary bg-blue-primary/10' : 'text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary' }} transition-all text-sm font-semibold group">
                             <span class="flex items-center">
                                 <i class="fa-solid fa-user-shield mr-3 group-hover:scale-110 transition"></i>
                                 Users
@@ -63,12 +64,12 @@
                         </ul>
                     </li>
 
-                    <li x-data="{ open: false }">
+                    <li x-data="{ open: {{ request()->routeIs('management.categories-products.*') ? 'true' : 'false' }} }">
                         <button @click="open = !open"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-xl text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary transition-all text-sm font-semibold group">
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-xl {{ request()->routeIs('management.categories-products.*') ? 'text-blue-primary bg-blue-primary/10' : 'text-gray-600 hover:bg-green-light-primary/30 hover:text-green-dark-primary' }} transition-all text-sm font-semibold group">
                             <span class="flex items-center">
-                                <i class="fa-solid fa-boxes-stacked mr-3 group-hover:scale-110 transition"></i>
-                                Inventory
+                                <i class="fa-solid fa-user-shield mr-3 group-hover:scale-110 transition"></i>
+                                Produk
                             </span>
                             <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300"
                                 :class="{ 'rotate-180': open }"></i>
@@ -76,10 +77,10 @@
                         <ul x-show="open" x-transition
                             class="mt-1 ml-4 border-l-2 border-green-light-primary space-y-1">
                             <li><a href="#"
-                                    class="block py-2 px-6 text-sm text-gray-500 hover:text-blue-primary font-medium">Daftar
-                                    Barang</a></li>
-                            <li><a href="#"
-                                    class="block py-2 px-6 text-sm text-gray-500 hover:text-blue-primary font-medium">Kategori</a>
+                                    class="block py-2 px-6 text-sm text-gray-500 hover:text-blue-primary font-medium">Management
+                                    Produk</a></li>
+                            <li><a href="{{ route('management.categories-products.index') }}"
+                                    class="block py-2 px-6 text-sm {{ request()->routeIs('management.categories-products.*') ? 'text-blue-primary font-bold' : 'text-gray-500 hover:text-blue-primary' }} font-medium">Kategori</a>
                             </li>
                         </ul>
                     </li>

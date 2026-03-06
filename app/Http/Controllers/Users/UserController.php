@@ -23,6 +23,7 @@ class UserController extends Controller
         $this->user = $user;
         $this->store = $store;
     }
+
     /**
      * Display a listing of the resource.
      */
