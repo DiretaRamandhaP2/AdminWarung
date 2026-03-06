@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Categories\CategoryProductController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Users\UserController;
@@ -29,8 +30,15 @@ Route::middleware(['login'])->group(function () {
         });
 
         Route::prefix('management')->group(function () {
+            // Users Management
             Route::resource('users', UserController::class)->names('management.users');
-            Route::get('users/data', [UserController::class, 'dataTables'])->name('management.users.data');
+            // Route::get('users/data', [UserController::class, 'dataTables'])->name('management.users.data');
+
+            // category Products Management
+            Route::resource('categories-products', CategoryProductController::class)->names('management.categories-products');
+
+            // Products Management
+            // Route::resource('products', ProductController::class)->names('management.products');
         });
     });
 });
