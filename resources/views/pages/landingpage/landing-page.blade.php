@@ -21,7 +21,6 @@
         --color-white-primary: #F8FCFB;
     }
 </style>
-
 <body class="bg-white-primary font-sans text-gray-800">
     @include('sweetalert::alert')
     <nav class="bg-white-primary/80 sticky top-0 z-50 backdrop-blur-md border-b border-green-light-primary">

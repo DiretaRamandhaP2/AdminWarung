@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Categories\CategoryProductController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Users\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +39,7 @@ Route::middleware(['login'])->group(function () {
             Route::resource('categories-products', CategoryProductController::class)->names('management.categories-products');
 
             // Products Management
-            // Route::resource('products', ProductController::class)->names('management.products');
+            Route::resource('products', ProductController::class)->names('management.products');
         });
     });
 });

@@ -6,6 +6,8 @@ use App\Repositories\CategoriesProduct\CategoriesRepository;
 use App\Repositories\CategoriesProduct\Interface\CategoriesRepositoryInterface;
 use App\Repositories\Items\Interface\ItemRepositoryInterface;
 use App\Repositories\Items\ItemRepository;
+use App\Repositories\Product\Interface\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepository;
 use App\Repositories\Store\Interface\StoreRepositoryInterface;
 use App\Repositories\Store\StoreRepository;
 use App\Repositories\Users\Interface\UserRepositoryInterface;
@@ -21,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Repository
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(ItemRepositoryInterface::class, ItemRepository::class);
         $this->app->bind(StoreRepositoryInterface::class, StoreRepository::class);
         $this->app->bind(CategoriesRepositoryInterface::class, CategoriesRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
 
 
 
